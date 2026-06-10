@@ -1,1 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Pedidos - Peixaria</title>
 
+<style>
+:root{
+    --azul:#006994;
+    --azul-claro:#00b4d8;
+    --verde:#2ecc71;
+    --cinza:#f4f6f8;
+    --vermelho:#e74c3c;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:var(--cinza);
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    color:var(--azul);
+    margin-bottom:20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+button{
+    border:none;
+    border-radius:8px;
+    padding:12px 18px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-add{
+    background:var(--azul-claro);
+    color:#fff;
+}
+
+.btn-finalizar{
+    background:var(--verde);
+    color:#fff;
+}
+
+.btn-remover{
+    background:var(--vermelho);
+    color:#fff;
+    padding:6px 10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:var(--azul);
+    color:#fff;
+}
+
+th, td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:center;
+}
+
+.total{
+    font-size:28px;
+    color:var(--verde);
+    font-weight:bold;
+    text-align:right;
+    margin-top:15px;
+}
+
+.resumo{
+    margin-top:20px;
+    background:#eef9f1;
+    padding:15px;
+    border-radius:10px;
+}
+
+@media(max-width:700px){
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🐟 Sistema de Pedidos - Peixaria</h1>
+
+    <div class="card">
+
+        <div class="grid">
+
+            <div>
+                <label>Cliente</label>
+                <input type="text" id="cliente" placeholder="Nome do cliente">
+            </div>
+
+            <div>
+                <label>Peixe</label>
+                <select id="peixe">
+                    <option value="25">Tilápia - R$ 25/kg</option>
+                    <option value="30">Tambaqui - R$ 30/kg</option>
+                    <option value="38">Cioba - R$ 38/kg</option>
+                    <option value="45">Serra - R$ 45/kg</option>
+                    <option value="55">Camarão - R$ 55/kg</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Quantidade (kg)</label>
+                <input type="number" id="quantidade" min="0.1" step="0.1" value="1">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn-add" onclick="adicionarItem()">
+            Adicionar ao Pedido
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Itens do Pedido</h2>
+
+        <br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço/kg</th>
+                    <th>Kg</th>
+                    <th>Subtotal</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+
+            <tbody id="itensPedido"></tbody>
+        </table>
+
+        <div class="total" id="total">
+            Total: R$ 0,00
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Finalização</h2>
+
+        <br>
+
+        <div class="grid">
+
+            <div>
+                <label>Desconto (%)</label>
+                <input type="number" id="desconto" value="0">
+            </div>
+
+            <div>
+                <label>Taxa de Entrega (R$)</label>
+                <input type="number" id="entrega" value="0">
+            </div>
+
+        </div>
+
+        <br>
+
+        <button class="btn-finalizar" onclick="finalizarPedido()">
+            Calcular Valor Final
+        </button>
+
+        <div id="resultado"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+let pedido = [];
+
+function moeda(valor){
+    return valor.toLocaleString('pt-BR',{
+        style:'currency',
+        currency:'BRL'
+    });
+}
+
+function adicionarItem(){
+
+    const select = document.getElementById("peixe");
+    const nome = select.options[select.selectedIndex].text.split(" - ")[0];
+    const preco = Number(select.value);
+    const kg = Number(document.getElementById("quantidade").value);
+
+    if(kg <= 0){
+        alert("Informe uma quantidade válida.");
+        return;
+    }
+
+    pedido.push({
+        nome,
+        preco,
+        kg,
+        subtotal: preco * kg
+    });
+
+    atualizarTabela();
+}
+
+function removerItem(index){
+    pedido.splice(index,1);
+    atualizarTabela();
+}
+
+function atualizarTabela(){
+
+    const tbody = document.getElementById("itensPedido");
+
+    tbody.innerHTML = "";
+
+    let total = 0;
+
+    pedido.forEach((item,index)=>{
+
+        total += item.subtotal;
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${item.nome}</td>
+            <td>${moeda(item.preco)}</td>
+            <td>${item.kg} kg</td>
+            <td>${moeda(item.subtotal)}</td>
+            <td>
+                <button class="btn-remover"
+                onclick="removerItem(${index})">
+                X
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("total").innerHTML =
+        `Total: ${moeda(total)}`;
+}
+
+function finalizarPedido(){
+
+    const cliente =
+        document.getElementById("cliente").value.trim();
+
+    if(!cliente){
+        alert("Informe o nome do cliente.");
+        return;
+    }
+
+    if(pedido.length === 0){
+        alert("Adicione pelo menos um item.");
+        return;
+    }
+
+    let subtotal = pedido.reduce(
+        (soma,item)=> soma + item.subtotal,
+        0
+    );
+
+    const desconto =
+        Number(document.getElementById("desconto").value);
+
+    const entrega =
+        Number(document.getElementById("entrega").value);
+
+    const valorDesconto =
+        subtotal * (desconto/100);
+
+    const totalFinal =
+        subtotal - valorDesconto + entrega;
+
+    document.getElementById("resultado").innerHTML = `
+        <div class="resumo">
+
+            <h3>Resumo do Pedido</h3>
+
+            <p><strong>Cliente:</strong> ${cliente}</p>
+
+            <p><strong>Subtotal:</strong>
+            ${moeda(subtotal)}</p>
+
+            <p><strong>Desconto:</strong>
+            ${desconto}% (${moeda(valorDesconto)})</p>
+
+            <p><strong>Entrega:</strong>
+            ${moeda(entrega)}</p>
+
+            <hr style="margin:10px 0">
+
+            <h2 style="color:green">
+                Total Final:
+                ${moeda(totalFinal)}
+            </h2>
+
+            <p>
+                Data:
+                ${new Date().toLocaleString('pt-BR')}
+            </p>
+
+        </div>
+    `;
+}
+
+</script>
+
+</body>
+</html>
