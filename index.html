@@ -1,1 +1,336 @@
-<h1>oi, este é meu site!</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peixaria Mar de Umirim</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f9fc;
+    color:#333;
+}
+
+header{
+    background:#006994;
+    color:white;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    font-size:1.8rem;
+    font-weight:bold;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#ffd166;
+}
+
+.hero{
+    min-height:100vh;
+    background:linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+    url('https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=1600&q=80');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    padding:120px 8% 60px;
+    color:white;
+}
+
+.hero-content{
+    max-width:700px;
+}
+
+.hero h1{
+    font-size:3.5rem;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:1.2rem;
+    margin-bottom:30px;
+    line-height:1.7;
+}
+
+.btn{
+    display:inline-block;
+    background:#00b4d8;
+    color:white;
+    padding:15px 30px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    background:#0096c7;
+}
+
+section{
+    padding:80px 8%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.section-title h2{
+    font-size:2.3rem;
+    color:#006994;
+}
+
+.produtos{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#006994;
+}
+
+.diferenciais{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.diferencial{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.diferencial h3{
+    color:#006994;
+    margin-bottom:10px;
+}
+
+.sobre{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+}
+
+.sobre img{
+    width:100%;
+    border-radius:15px;
+}
+
+.sobre p{
+    line-height:1.8;
+}
+
+.contato{
+    background:#006994;
+    color:white;
+    text-align:center;
+}
+
+.contato h2{
+    margin-bottom:20px;
+}
+
+.contato p{
+    margin:10px 0;
+}
+
+footer{
+    background:#003b53;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+@media(max-width:768px){
+
+    .hero h1{
+        font-size:2.3rem;
+    }
+
+    .sobre{
+        grid-template-columns:1fr;
+    }
+
+    nav{
+        display:none;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">🐟 Peixaria Mar de Umirim</div>
+
+    <nav>
+        <a href="#produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Peixes e Frutos do Mar Fresquinhos em Umirim-CE</h1>
+
+        <p>
+            Qualidade, sabor e procedência garantida. Oferecemos peixes,
+            camarões e frutos do mar selecionados para sua família,
+            restaurante ou comércio.
+        </p>
+
+        <a href="#contato" class="btn">Faça seu Pedido</a>
+    </div>
+</section>
+
+<section id="produtos">
+    <div class="section-title">
+        <h2>Nossos Produtos</h2>
+    </div>
+
+    <div class="produtos">
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=800&q=80" alt="">
+            <div class="card-content">
+                <h3>Peixes Frescos</h3>
+                <p>Tambaqui, Tilápia, Cioba, Serra e diversas espécies selecionadas.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=80" alt="">
+            <div class="card-content">
+                <h3>Camarão</h3>
+                <p>Camarão fresco e congelado com excelente qualidade.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80" alt="">
+            <div class="card-content">
+                <h3>Frutos do Mar</h3>
+                <p>Opções variadas para refeições especiais e restaurantes.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <div class="section-title">
+        <h2>Por que Escolher Nossa Peixaria?</h2>
+    </div>
+
+    <div class="diferenciais">
+
+        <div class="diferencial">
+            <h3>🧊 Frescor Garantido</h3>
+            <p>Produtos armazenados seguindo padrões de qualidade.</p>
+        </div>
+
+        <div class="diferencial">
+            <h3>🚚 Entrega Local</h3>
+            <p>Atendimento rápido para Umirim e região.</p>
+        </div>
+
+        <div class="diferencial">
+            <h3>⭐ Atendimento de Qualidade</h3>
+            <p>Equipe preparada para orientar sua compra.</p>
+        </div>
+
+    </div>
+</section>
+
+<section id="sobre">
+    <div class="sobre">
+
+        <img src="https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=1000&q=80" alt="Peixaria">
+
+        <div>
+            <h2 style="color:#006994; margin-bottom:20px;">Sobre Nós</h2>
+
+            <p>
+                A Peixaria Mar de Umirim nasceu com a missão de oferecer
+                pescado de qualidade para a população de Umirim e região.
+                Trabalhamos com fornecedores confiáveis, garantindo
+                frescor, sabor e segurança alimentar.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section id="contato" class="contato">
+
+    <h2>Entre em Contato</h2>
+
+    <p>📍 Umirim - Ceará</p>
+    <p>📞 (85) 99999-9999</p>
+    <p>✉ contato@peixariamar.com.br</p>
+
+    <br>
+
+    <a href="#" class="btn">
+        Chamar no WhatsApp
+    </a>
+
+</section>
+
+<footer>
+    © 2026 Peixaria Mar de Umirim - Todos os direitos reservados.
+</footer>
+
+</body>
+</html>
